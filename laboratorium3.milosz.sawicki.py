@@ -5,6 +5,7 @@
 #MILOSZ SAWICKI
 #03.04.2019
 
+import argparse
 
 class Stack:
     def __init__(S):
@@ -87,20 +88,25 @@ def Oblicz(input):
 
 #print(Oblicz("6 5 - 8 4 - * 4 3 - /"))
 
+def Main():
+    parser=argparse.ArgumentParser(description = "Konwerter Infix/Postfix. \n Example usage: -c plik1.txt | -s plik2.txt", prog = "ALG3")
+    parser.add_argument("plik",  type= str)
+    group_0 = parser.add_mutually_exclusive_group(required=True)
+    group_0.add_argument("-c", "--convert",  help = "Konwersja notacji infix do postfix",  action = "store_true")
+    group_0.add_argument("-s", "--solve", help = "Obliczanie wyrazenia w notacji postfix", action = "store_true")
+
+    args= vars(parser.parse_args())
+    dane = odczyt(args['plik'])
+    print("\nOdczytane dane: %s" %(dane))
+
+    if args['convert']==True:
+        out=InfixPostfix(dane)
+        print("Konwersja do postfix: %s" %out)
+    else:
+        out=Oblicz(dane)
+        print("Wynik: %i" %out)
 
 
-print("1 - Konwersja notacji infix do postfix")
-print("2 - Obliczanie wyrazenia w notacji postfix")
-wybor = int(input())
 
-plik=input("Prosze wprowadzic nazwe pliku z danymi(np. plik1.txt / plik2.txt):  ")
-
-dane=odczyt(plik)
-print("\nOdczytane dane: %s" %(dane))
-
-if wybor == 1:
-    out=InfixPostfix(dane)
-    print("Konwersja do postfix: %s" %out)
-if wybor == 2:
-    out=Oblicz(dane)
-    print("Wynik: %i" %out)
+if __name__== '__main__':
+    Main()
